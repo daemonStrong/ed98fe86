@@ -2,12 +2,36 @@
     <div>
         <div class="d-flex justify-space-between pb-4">
             <section class="d-flex ga-4">
-                <v-btn variant="tonal" class="tab_button rounded-md px-8 py-1.5" :active="active_button === 'graph'" :ripple="false" @click="changeTab('graph')" height="36">
+                <v-chip class="button_tab" :class="{'active': active_button === 'graph'}" :ripple="false" @click="changeTab('graph')">
                     График
-                </v-btn>
-                <v-btn variant="tonal" class="tab_button rounded-md px-8 py-1.5" :active="active_button === 'table'" :ripple="false" @click="changeTab('table')" height="36">
+                </v-chip>
+                <v-chip class="button_tab" :class="{'active': active_button === 'table'}" :ripple="false" @click="changeTab('table')">
                     Таблица
-                </v-btn>
+                </v-chip>
+
+
+                <!-- <v-menu v-model="menu"
+                    bottom
+                    right
+                    transition="scale-transition"
+                    origin="top left"
+                    bg-color="grey-lighten-2" :close-on-content-click="false">
+                    <template #activator="{ on }">
+                        <v-chip pill @click="on" class="button_tab" :ripple="false" append-icon="mdi-calendar-blank-outline">
+                            {{ titleInputForDate }}
+                        </v-chip>
+                    </template>
+                    <v-date-picker
+                        color="primary"
+                        hideHeader
+                        v-model="dates" multiple="range"
+                        >
+                    </v-date-picker>
+                </v-menu> -->
+
+
+
+
                 <div v-click-outside="closeFrameDate" style="position: relative;">
                     <v-btn variant="tonal" @click="openFrameDate" append-icon="mdi-calendar-blank-outline" :ripple="false" class="tab_button d-flex justify-space-between align-center ga-2 rounded-md px-8 bg-grey-lighten-2" style="width: 262px; height: 36px;">
                         <div class="d-flex align-center" style="width: 100%; font-size: 16px;">
@@ -40,6 +64,8 @@ export default {
             today: 0,
             resetPage: 0,
 
+            menu: false,
+
             openedDate: false,
             dates: [],
             active_button: 'table',
@@ -54,7 +80,7 @@ export default {
                 {title: 'Период "от" и "до"', value: 'calendar'},
             ],
 
-            selectPeriod: 'current_month',
+            selectPeriod: 'calendar',
 
             table: {
                 "total": {
@@ -181,53 +207,17 @@ export default {
             return namesObj[this.selectPeriod]
         },
         datesForStats(){
-            switch (this.selectPeriod) {
-                case 'current_month': {
-                    let timeStart = format(this.today, 'yyyy-MM-01')
-                    let timeEnd = format(this.today, 'yyyy-MM-dd')
-                    return {
-                        start: timeStart,
-                        end: timeEnd
-                    }
+            if(this.dates?.length){
+                let timeStart = format(this.dates[0], 'yyyy-MM-dd')
+                let timeEnd = format(this.dates[this.dates.length - 1], 'yyyy-MM-dd')
+                return {
+                    start: timeStart,
+                    end: timeEnd,
                 }
-                case 'today': {
-                    let timeToday = format(this.today, 'yyyy-MM-dd')
-                    return {
-                        start: timeToday,
-                        end: timeToday
-                    }
-                }
-                case 'week': {
-                    let timeStart = format(getMonday(this.today), 'yyyy-MM-dd')
-                    let timeEnd = format(this.today, 'yyyy-MM-dd')
-                    return {
-                        start: timeStart,
-                        end: timeEnd,
-                    }
-                }
-                case 'month': {
-                    let date = new Date(this.today.getFullYear(), this.today.getMonth() - 1, this.today.getDate())
-                    let timeStart = format(date, 'yyyy-MM-dd')
-                    let timeEnd = format(this.today, 'yyyy-MM-dd')
-                    return {
-                        start: timeStart,
-                        end: timeEnd,
-                    }
-                }
-                case 'calendar': {
-                    if(this.dates?.length){
-                        let timeStart = format(this.dates[0], 'yyyy-MM-dd')
-                        let timeEnd = format(this.dates[this.dates.length - 1], 'yyyy-MM-dd')
-                        return {
-                            start: timeStart,
-                            end: timeEnd,
-                        }
-                    } else {
-                        return {
-                            start: null,
-                            end: null,
-                        }
-                    }
+            } else {
+                return {
+                    start: null,
+                    end: null,
                 }
             }
         },
@@ -267,8 +257,8 @@ export default {
                 let { data } = await useMyFetch(`/api/statistics/`, {
                     methods: "GET",
                     params: {
-                        date_from: this.datesForStats?.start,
-                        date_to: this.datesForStats?.end
+                        date_from: this.datesForStats?.start || null,
+                        date_to: this.datesForStats?.end || null
                     }
                 })
                 if(data.value) {
@@ -278,7 +268,6 @@ export default {
                 console.log('e: ', e)
             }
         },
-
     },
     mounted(){
         this.today = new Date()
@@ -292,6 +281,22 @@ export default {
 </style>
 
 <style>
+    .button_tab {
+        border-radius: 4px;
+        min-height: 36px;
+        padding: 0 32px !important;
+        cursor: pointer;
+    }
+
+    .button_tab.active {
+        background-color: #2196F3;
+        color: #FFFFFF;
+    }
+
+
+
+
+
 
     .tab_button {
         text-transform: none;
