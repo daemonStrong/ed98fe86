@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@nuxtjs/google-fonts": "^3.2.0",
+    "sass": "^1.72.0",
     "vite-plugin-vuetify": "^2.0.3",
     "vuetify": "^3.5.11"
   }
