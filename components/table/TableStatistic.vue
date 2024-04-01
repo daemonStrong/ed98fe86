@@ -28,7 +28,7 @@
             </thead>
             <tbody>
                 <tr v-for="item in listItemsComp" class="items_table" :key="item.name">
-                    <td>{{ item.name }}</td>
+                    <td>{{ checkName(item.name) }}</td>
                     <td>{{ formattedNumber(item.mass) }}</td>
                     <td>{{ formattedNumber(item.personal) }}</td>
                     <td>{{ formattedNumber(item.informational) }}</td>
@@ -57,11 +57,9 @@
                 </span>
             </div>
             <div class="d-flex ga-4" style="">
-                <v-btn variant="text" class="rounded-none pa-0" :disabled="selectedPage === Math.min(...pagesList)" max-width="32" height="32" @click="changePage('last')">
-                    <i class="mdi-chevron-left mdi v-icon notranslate v-theme--light v-icon--size-default" aria-hidden="true"></i>
+                <v-btn variant="text" color="grey-darken-1" icon="mdi-chevron-left" class="rounded-none px-0" :disabled="selectedPage === Math.min(...pagesList)" max-width="32" height="32" @click="changePage('last')">
                 </v-btn>
-                <v-btn variant="text" class="rounded-none pa-0" :disabled="selectedPage === Math.max(...pagesList)" max-width="32" height="32" @click="changePage('next')">
-                    <i class="mdi-chevron-right mdi v-icon notranslate v-theme--light v-icon--size-default" aria-hidden="true"></i>
+                <v-btn variant="text" color="grey-darken-1" icon="mdi-chevron-right" class="rounded-none px-0" :disabled="selectedPage === Math.max(...pagesList)" max-width="32" height="32" @click="changePage('next')">
                 </v-btn>
             </div>
         </div>
@@ -136,6 +134,17 @@ export default {
         },
         formattedNumber(number){
             return number.toLocaleString().replace(/,/g, ' ');
+        },
+        checkName(int_name){
+            let names = {
+                marketing: 'Маркетинг',
+                sales: 'Продажи',
+                informational: 'Информационный',
+                survey: 'Опросы',
+                commercial_survey: 'Коммерческие опросы',
+                service: 'Сервисы',
+            }
+            return names[int_name] || int_name
         }
     },
     mounted(){

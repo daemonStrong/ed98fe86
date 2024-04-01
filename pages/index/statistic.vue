@@ -10,38 +10,27 @@
                 </v-chip>
 
 
-                <!-- <v-menu v-model="menu"
+                <v-menu v-model="menu"
                     bottom
                     right
                     transition="scale-transition"
                     origin="top left"
                     bg-color="grey-lighten-2" :close-on-content-click="false">
-                    <template #activator="{ on }">
-                        <v-chip pill @click="on" class="button_tab" :ripple="false" append-icon="mdi-calendar-blank-outline">
+                    <template #activator="{ props }">
+                        <v-chip pill v-bind="props" class="button_tab" :ripple="false">
                             {{ titleInputForDate }}
+                            <template #append>
+                                <v-icon style="transform: translateX(16px)" color="grey-darken-1">mdi-calendar-blank-outline</v-icon>
+                            </template>
                         </v-chip>
                     </template>
                     <v-date-picker
-                        color="primary"
+                        color="#1976D2"
                         hideHeader
                         v-model="dates" multiple="range"
                         >
                     </v-date-picker>
-                </v-menu> -->
-
-
-
-
-                <div v-click-outside="closeFrameDate" style="position: relative;">
-                    <v-btn variant="tonal" @click="openFrameDate" append-icon="mdi-calendar-blank-outline" :ripple="false" class="tab_button d-flex justify-space-between align-center ga-2 rounded-md px-8 bg-grey-lighten-2" style="width: 262px; height: 36px;">
-                        <div class="d-flex align-center" style="width: 100%; font-size: 16px;">
-                            {{ titleInputForDate }}
-                        </div>
-                    </v-btn>
-                    <div style="position: absolute; top: calc(100% + 4px)">
-                        <v-date-picker border class="rounded-lg" v-if="openedDate" hide-header v-model="dates" multiple="range"></v-date-picker>
-                    </div>
-                </div>
+                </v-menu>
             </section>
 
             <v-btn variant="flat" class="rounded-lg" color="#2196F3" size="x-large" width="171" height="48" style="font-size: 14px; font-weight: 500;text-transform: none;">
@@ -140,54 +129,6 @@ export default {
                         "commercial_survey": 100,
                         "service": 100
                     },
-                    "marketing1": {
-                        "mass": 100,
-                        "personal": 100,
-                        "informational": 100,
-                        "survey": 100,
-                        "commercial_survey": 100,
-                        "service": 100
-                    },
-                    "sales1": {
-                        "mass": 100,
-                        "personal": 100,
-                        "informational": 100,
-                        "survey": 100,
-                        "commercial_survey": 100,
-                        "service": 100
-                    },
-                    "informational1": {
-                        "mass": 100,
-                        "personal": 100,
-                        "informational": 100,
-                        "survey": 100,
-                        "commercial_survey": 100,
-                        "service": 100,
-                    },
-                    "survey1": {
-                        "mass": 100,
-                        "personal": 100,
-                        "informational": 100,
-                        "survey": 100,
-                        "commercial_survey": 100,
-                        "service": 100
-                    },
-                    "commercial_survey1": {
-                        "mass": 100,
-                        "personal": 100,
-                        "informational": 100,
-                        "survey": 100,
-                        "commercial_survey": 100,
-                        "service": 100
-                    },
-                    "service1": {
-                        "mass": 100,
-                        "personal": 100,
-                        "informational": 100,
-                        "survey": 100,
-                        "commercial_survey": 100,
-                        "service": 100
-                    }
                 }
             }
         }

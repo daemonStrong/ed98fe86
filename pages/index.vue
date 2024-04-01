@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-blue-grey-lighten-5 py-10">
+    <div class="py-10">
         <div class="mx-auto max-width ga-4" style="display: grid; grid-template-columns: 240px 1fr;">
             <div class="gy-2" style="display: grid; grid-auto-rows: max-content">
                 <NuxtLink class="mb-2" :to="navItem.link" v-for="navItem in navListItems" :key="navItem.link">
@@ -24,7 +24,7 @@ export default {
                 {link: '/clients_api', name: 'Клиенты API'},
             ]
         }
-    },
+    }
 }
 </script>
 

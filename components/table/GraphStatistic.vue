@@ -72,7 +72,7 @@ export default {
                         // "survey": 100,
                         // "commercial_survey": 100,
                         // "service": 100
-                labels: Object.keys(this.table?.departments).map(i => i),
+                labels: Object.keys(this.table?.departments).map(i => this.checkName(i)),
                 datasets: [
                     {
                         label: 'Массовая коммуникация',
@@ -161,17 +161,24 @@ export default {
                 this.chartData.labels.push(dep)
                 Object.keys(departments[dep]).forEach((type, index)=>{
                     dataset[index].data.push(departments[dep][type])
-                    console.log('dataset[index]: ', dataset[index]);
                 })
             })
-            console.log('this.chartData.labels: ', this.chartData.labels);
-            console.log('dataset: ', dataset);
             this.chartData.datasets = dataset
             if(this.$refs.chartJS) {
                 let chartJS = this.$refs.chartJS
-                console.log('chartJS: ', chartJS);
                 chartJS.chart.update()
             }
+        },
+        checkName(int_name){
+            let names = {
+                marketing: 'Маркетинг',
+                sales: 'Продажи',
+                informational: 'Информационный',
+                survey: 'Опросы',
+                commercial_survey: 'Коммерческие опросы',
+                service: 'Сервисы',
+            }
+            return names[int_name] || int_name
         }
     },
     mounted(){
