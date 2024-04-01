@@ -113,7 +113,7 @@
 <script lang="ts" setup>
 const { params } = useRoute()
 const { back } = useRouter()
-const { data, refresh } = await useFetch(`http://127.0.0.1:8000/api/users/${params.id}/`)
+const { data, refresh } = await useFetch(`http://127.0.0.1:8008/api/users/${params.id}/`)
 const { id, full_name, email, phone, status } = data.value
 
 const isLoading = ref(false)
@@ -121,7 +121,7 @@ const isLoading = ref(false)
 const onDeleteClick = async () => {
   isLoading.value = true
   try {
-    const response = await $fetch(`http://127.0.0.1:8000/api/users/${id}/`, {
+    const response = await $fetch(`http://127.0.0.1:8008/api/users/${id}/`, {
       method: 'DELETE'
     })
   } catch(error) {

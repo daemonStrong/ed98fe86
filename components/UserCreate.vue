@@ -1,51 +1,96 @@
 <template>
   <v-form v-model="valid" @submit.prevent>
-    <v-container class="bg-white">
+    <v-container class="bg-white rounded-lg">
       <v-row>
-        <v-col cols="12">
-          <v-text-field
-            v-model="name"
-            :counter="10"
-            :rules="nameRules"
-            label="ФИО"
-            required
-            variant="outlined"
-          />
+        <v-col>
+          <div class="personal-data-text">
+            Личные данные
+          </div>
         </v-col>
       </v-row>
-
       <v-row>
-        <v-col cols="4">
-          <v-text-field
-            v-model="email"
-            :rules="emailRules"
-            label="E-mail"
-            required
-            variant="outlined"
-          />
-        </v-col>
+        <v-col cols="9">
+          <v-row>
+            <v-col cols="12">
+              <v-text-field
+                v-model="name"
+                :counter="10"
+                :rules="nameRules"
+                label="ФИО"
+                required
+                variant="outlined"
+              />
+            </v-col>
+          </v-row>
 
-        <v-col cols="4">
-          <v-text-field
-            type="tel"
-            v-model="phone"
-            :rules="[(v) => !!v || 'Телефон обязателен']"
-            label="Телефон"
-            required
-            variant="outlined"
-          />
-        </v-col>
+          <v-row>
+            <v-col cols="4">
+              <v-text-field
+                v-model="email"
+                :rules="emailRules"
+                label="E-mail"
+                required
+                variant="outlined"
+              />
+            </v-col>
 
-        <v-col>
-          <v-select
-            v-model="status"
-            label="Select"
-            :items="[{title: 'Активный', value: 'ACTIVE'}, {title: 'Заблокирован', value: 'BLOCKED'}]"
-            variant="outlined"
-          />
+            <v-col cols="4">
+              <v-text-field
+                type="tel"
+                v-model="phone"
+                :rules="[(v) => !!v || 'Телефон обязателен']"
+                label="Телефон"
+                required
+                variant="outlined"
+              />
+            </v-col>
+
+            <v-col>
+              <v-select
+                v-model="status"
+                label="Cтатус"
+                :items="[{title: 'Активный', value: 'ACTIVE'}, {title: 'Заблокирован', value: 'BLOCKED'}]"
+                variant="outlined"
+              />
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
     </v-container>
+
+    <v-container class="bg-white mt-4 rounded-lg">
+      <v-row>
+        <v-col>
+          <div class="personal-data-text">
+            Подразделение и коммуникация
+          </div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="6">
+          <v-row>
+            <v-col cols="6">
+              <v-select
+                v-model="department"
+                label="Подразделение"
+                :items="[{title: 'Продажи', value: '1'}, {title: 'Маркетинг', value: '2'}, {title: 'Paзработка', value: '3'}, {title: 'Дизайн', value: '4'}, {title: 'Поддержка', value: '5'}]"
+                variant="outlined"
+              />
+            </v-col>
+
+            <v-col cols="6">
+              <v-select
+                v-model="channel"
+                label="Канал отправки"
+                :items="[{title: 'SMS', value: '1'}, {title: 'Messenger', value: '2'}, {title: 'Push', value: '3'}, {title: 'Email', value: '4'}]"
+                variant="outlined"
+              />
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-container>
+
     <v-container>
       <v-row>
         <v-col cols="auto">
@@ -82,7 +127,7 @@
 
   const { params } = useRoute()
   const { back } = useRouter()
-  const { data, pending, error, refresh } = await useFetch(`http://127.0.0.1:8000/api/users/${params?.id}/`, {
+  const { data, pending, error, refresh } = await useFetch(`http://127.0.0.1:8008/api/users/${params?.id}/`, {
     immediate: false
   })
 
@@ -129,7 +174,7 @@
   const submit = async () => {
     isLoading.value = true
     try {
-      const response = await $fetch(`http://127.0.0.1:8000/api/users${!params?.id ? '' : `/${params?.id}`}/`, {
+      const response = await $fetch(`http://127.0.0.1:8008/api/users${!params?.id ? '' : `/${params?.id}`}/`, {
         method: !params?.id ? 'POST' : 'PUT',
         body: {
           // status: status.value,
@@ -154,4 +199,18 @@
       back()
     }
   }
+
+  const department = ref('1')
+  const channel = ref('1')
 </script>
+
+<style lang="scss" scoped>
+.personal-data-text {
+  font-family: Roboto;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 32px;
+  letter-spacing: 0.25px;
+  text-align: left;
+}
+</style>
