@@ -36,14 +36,16 @@
             <td>{{ item.full_name }}</td>
             <td>{{ item.email }}</td>
             <td>{{ item.phone }}</td>
-            <td>{{ item.department }}</td>
-            <td>{{ item?.preferred_contact_method.join(', ') }}</td>
             <td>
-              <v-row align="center">
-                <v-col cols="9">
-                  <v-chip label :color="item.status !== 'ACTIVE' ? 'error' : 'success'">
-                    {{ item.status !== 'ACTIVE' ? 'ЗАБЛОКИРОВАН' : 'АКТИВЕН' }}
-                  </v-chip>
+              <v-chip label :color="item.status !== 'ACTIVE' ? 'error' : 'success'">
+                {{ item.status !== 'ACTIVE' ? 'ЗАБЛОКИРОВАН' : 'АКТИВЕН' }}
+              </v-chip>
+            </td>
+            <td>{{ item.department }}</td>
+            <td>
+              <v-row>
+                <v-col>
+                  {{ item?.preferred_contact_method.join(', ') }}
                 </v-col>
                 <v-spacer></v-spacer>
                 <v-col>
