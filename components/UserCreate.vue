@@ -13,7 +13,7 @@
           <v-row>
             <v-col cols="12">
               <v-text-field
-                v-model="name"
+                v-model="form.full_name"
                 :counter="10"
                 :rules="nameRules"
                 label="ФИО"
@@ -26,7 +26,7 @@
           <v-row>
             <v-col cols="4">
               <v-text-field
-                v-model="email"
+                v-model="form.email"
                 :rules="emailRules"
                 label="E-mail"
                 required
@@ -37,7 +37,7 @@
             <v-col cols="4">
               <v-text-field
                 type="tel"
-                v-model="phone"
+                v-model="form.phone"
                 :rules="[(v) => !!v || 'Телефон обязателен']"
                 label="Телефон"
                 required
@@ -47,7 +47,7 @@
 
             <v-col>
               <v-select
-                v-model="status"
+                v-model="form.status"
                 label="Cтатус"
                 :items="[{title: 'Активный', value: 'ACTIVE'}, {title: 'Заблокирован', value: 'BLOCKED'}]"
                 variant="outlined"
@@ -80,9 +80,9 @@
 
             <v-col cols="6">
               <v-select
-                v-model="channel"
+                v-model="form.preferred_contact_method"
                 label="Канал отправки"
-                :items="[{title: 'SMS', value: '1'}, {title: 'Messenger', value: '2'}, {title: 'Push', value: '3'}, {title: 'Email', value: '4'}]"
+                :items="[{title: 'SMS', value: 'SMS'}, {title: 'Messenger', value: 'Messenger'}, {title: 'Push', value: 'Push'}, {title: 'Email', value: 'Email'}]"
                 variant="outlined"
               />
             </v-col>
@@ -122,6 +122,16 @@
     status: 'ACTIVE' | 'BLOCKED';
   }
 
+  const form = reactive({
+    "full_name": "string",
+    "email": "user@example.com",
+    "phone": "string",
+    "status": "ACTIVE",
+    "preferred_contact_method": [
+      "SMS"
+    ]
+  })
+
   const valid = ref(false)
   const isLoading = ref(false)
 
@@ -145,7 +155,6 @@
     }
   ]
 
-  const email = ref('')
   const emailRules = [
     value => {
       if (value) return true
@@ -159,16 +168,13 @@
     }
   ]
 
-  const phone = ref('')
-
-  const status = ref('ACTIVE')
-
   if(params?.id) {
     await refresh()
-    name.value = data.value.full_name
-    email.value = data.value.email
-    phone.value = data.value.phone
-    status.value = data.value.status
+    form.full_name = data.value.full_name
+    form.email = data.value.email
+    form.phone = data.value.phone
+    form.status = data.value.status
+    form.preferred_contact_method = data.value.preferred_contact_method
   }
   
   const submit = async () => {
@@ -176,21 +182,7 @@
     try {
       const response = await $fetch(`http://127.0.0.1:8008/api/users${!params?.id ? '' : `/${params?.id}`}/`, {
         method: !params?.id ? 'POST' : 'PUT',
-        body: {
-          // status: status.value,
-          // full_name: name.value,
-          // email: email.value,
-          // phone: phone.value
-          "full_name": "string",
-          "email": "user@example.com",
-          "phone": "string",
-          "password": "string",
-          "status": "ACTIVE",
-          "department": "string",
-          "preferred_contact_method": [
-            "SMS"
-          ]
-        }
+        body: form
       })
     } catch(error) {
       console.error(error)
@@ -201,7 +193,6 @@
   }
 
   const department = ref('1')
-  const channel = ref('1')
 </script>
 
 <style lang="scss" scoped>
