@@ -1,6 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12">
+      <v-btn flat color="blue" href="/users/create/" height="48px" class="mb-4">Добавить</v-btn>
       <v-table
         height="300px"
         fixed-header
